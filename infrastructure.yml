@@ -27,7 +27,6 @@
       group: "{{ security_group }}"
       image: "{{ image }}"
       wait: true
-      assign_public_ip: yes
       exact_count: 2
       count_tag:
         Name: Lesson13
