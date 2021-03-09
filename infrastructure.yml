@@ -12,7 +12,6 @@
   - name: Ensure that two hosts exists
     ec2:
       region: "{{ region }}"
-      group: "{{ security_group }}"
       instance_type: "{{ instance_type }}"
       image: "{{ image }}"
       wait: true
