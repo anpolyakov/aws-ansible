@@ -17,8 +17,10 @@
       region: "{{ region }}"
       rules:
         - proto: tcp
-          from_port: 22
-          to_port: 22
+          ports:
+          - 22
+          cidr_ip: 0.0.0.0/0
+          rule_desc: allow ssh access
 
   - name: Ensure that two hosts exists
     ec2:
