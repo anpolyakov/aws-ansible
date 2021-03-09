@@ -3,8 +3,9 @@
   gather_facts: False
   hosts: localhost
   
-  tasks: Ensure that two hosts exists
-  - name:
+  tasks:
+
+  - name: Ensure that two hosts exists
     ec2:
       instance_type: t2.micro
       image: "ami-0767046d1677be5a0"
