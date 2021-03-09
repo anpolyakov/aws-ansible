@@ -2,14 +2,20 @@
 - name: Create two EC2 nodes
   gather_facts: False
   hosts: localhost
+  vars:
+    instance_type: t2.micro
+    security_group: lesson13_securitygroup
+    image: "ami-0767046d1677be5a0"
+    region: eu-central-1
   
   tasks:
 
   - name: Ensure that two hosts exists
     ec2:
-      region: eu-central-1
-      instance_type: t2.micro
-      image: "ami-0767046d1677be5a0"
+      region: "{{ region }}"
+      group: "{{ security_group }}"
+      instance_type: "{{ instance_type }}"
+      image: "{{ image }}"
       wait: true
       exact_count: 2
       count_tag:
@@ -17,3 +23,27 @@
       instance_tags:
         Name: Lesson13
     register: ec2
+
+  - name: Add new instance to host group
+    add_host:
+      hostname: "{{ item.public_ip }}"
+      groupname: lesson13
+    loop: "{{ ec2.instances }}"
+
+- name: Configure instances
+  hosts: lesson13
+  become: true
+  gather_facts: true
+
+  tasks:
+
+  - name: Check hostname
+    shell: hostname && curl ifconfig.me
+    
+- name: Terminate instances
+  hosts: localhost
+  tasks:
+    - name: Terminate that were previously launched
+      ec2:
+        state: 'absent'
+        instance_ids: "{{ ec2.instance_ids }}"
