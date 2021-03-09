@@ -27,6 +27,7 @@
       group: "{{ security_group }}"
       image: "{{ image }}"
       wait: true
+      assign_public_ip: yes
       exact_count: 2
       count_tag:
         Name: Lesson13
@@ -49,8 +50,8 @@
 
 - name: Configure instances
   hosts: lesson13
-  become: true
-  gather_facts: true
+  become: True
+  gather_facts: True
 
   tasks:
 
@@ -63,4 +64,4 @@
     - name: Terminate that were previously launched
       ec2:
         state: 'absent'
-        instance_ids: "{{ ec2.instance_ids }}"
+        instance_ids: '{{ ec2.instance_ids }}'
