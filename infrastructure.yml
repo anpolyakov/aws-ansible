@@ -7,6 +7,7 @@
 
   - name: Ensure that two hosts exists
     ec2:
+      region: eu-central-1
       instance_type: t2.micro
       image: "ami-0767046d1677be5a0"
       wait: true
