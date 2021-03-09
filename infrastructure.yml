@@ -4,7 +4,6 @@
   hosts: localhost
   vars:
     instance_type: t2.micro
-    security_group: lesson13_securitygroup
     image: "ami-0767046d1677be5a0"
     region: eu-central-1
   
