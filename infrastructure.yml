@@ -2,9 +2,10 @@
 - name: Create two EC2 nodes
   gather_facts: False
   hosts: localhost
-  become_user: ubuntu
+  remote_user: ubuntu
   vars:
-    keypair: lesson13_keypair
+    keypair: lesson13_key
+    ansible_key: /tmp/lesson13_keypair.pem
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
     security_group: lesson13_securitygroup
@@ -14,7 +15,13 @@
 
   - name: Create a new ec2 key pair
     ec2_key:
-      name: lesson13_keypair
+      region: "{{ region }}"
+      name: "{{ keypair }}"
+    register: ec2_key_result
+
+  - name: Save private key
+    copy: content="{{ ec2_key_result.key.private_key }}" dest="/tmp/lesson13_keypair.pem" mode=0600
+    when: ec2_key_result.changed
 
   - name: Ensure that this security group is present
     ec2_group:
@@ -47,13 +54,14 @@
     add_host:
       hostname: "{{ item.public_ip }}"
       groupname: lesson13
+      ansible_ssh_private_key_file: "{{ ansible_key }}"
     loop: "{{ ec2.instances }}"
 
   - name: Wait for SSH to come up
-    delegate_to: "{{ item.public_dns_name }}"
+    delegate_to: "{{ item.public_ip }}"
     wait_for_connection:
-      delay: 60
-      timeout: 60
+      delay: 30
+      timeout: 30
     loop: "{{ ec2.instances }}"
 
 - name: Configure instances
