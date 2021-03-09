@@ -5,14 +5,25 @@
   vars:
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
+    security_group: lesson13_securitygroup
     region: eu-central-1
   
   tasks:
+
+  - name: Ensure that this security group is present
+    ec2_group:
+      name: "{{ security_group }}"
+      region: "{{ region }}"
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
 
   - name: Ensure that two hosts exists
     ec2:
       region: "{{ region }}"
       instance_type: "{{ instance_type }}"
+      group: "{{ security_group }}"
       image: "{{ image }}"
       wait: true
       exact_count: 2
