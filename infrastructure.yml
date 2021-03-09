@@ -78,6 +78,8 @@
 - name: Terminate instances
   hosts: localhost
   remote_user: ubuntu
+  vars:
+    region: eu-central-1
   tasks:
     - name: Terminate that were previously launched
       ec2:
