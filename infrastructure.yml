@@ -3,12 +3,17 @@
   gather_facts: False
   hosts: localhost
   vars:
+    keypair: lesson13_keypair
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
     security_group: lesson13_securitygroup
     region: eu-central-1
   
   tasks:
+
+  - name: Create a new ec2 key pair
+    ec2_key:
+      name: lesson13_keypair
 
   - name: Ensure that this security group is present
     ec2_group:
@@ -24,6 +29,7 @@
 
   - name: Ensure that two hosts exists
     ec2:
+      key_name: "{{ keypair }}"
       region: "{{ region }}"
       instance_type: "{{ instance_type }}"
       group: "{{ security_group }}"
