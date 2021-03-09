@@ -6,12 +6,12 @@
   tasks: Ensure that two hosts exists
   - name:
     ec2:
-        instance_type: t2.micro
-        image: "ami-0767046d1677be5a0"
-        wait: true
-        exact_count: 2
-        count_tag:
-          Name: Lesson13
-        instance_tags:
-          Name: Lesson13
+      instance_type: t2.micro
+      image: "ami-0767046d1677be5a0"
+      wait: true
+      exact_count: 2
+      count_tag:
+        Name: Lesson13
+      instance_tags:
+        Name: Lesson13
     register: ec2
