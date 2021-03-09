@@ -2,6 +2,7 @@
 - name: Create two EC2 nodes
   gather_facts: False
   hosts: localhost
+  become_user: ubuntu
   vars:
     keypair: lesson13_keypair
     instance_type: t2.micro
@@ -52,7 +53,7 @@
     delegate_to: "{{ item.public_dns_name }}"
     wait_for_connection:
       delay: 60
-      timeout: 320
+      timeout: 60
     loop: "{{ ec2.instances }}"
 
 - name: Configure instances
