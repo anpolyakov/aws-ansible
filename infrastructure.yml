@@ -81,5 +81,6 @@
   tasks:
     - name: Terminate that were previously launched
       ec2:
+        region: "{{ region }}"
         state: 'absent'
         instance_ids: '{{ ec2.instance_ids }}'
