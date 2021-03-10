@@ -1,5 +1,5 @@
 ---
-- name: Build Java App
+- name: Create Maven Environment
   gather_facts: False
   hosts: localhost
   remote_user: ubuntu
@@ -133,7 +133,7 @@
       src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
       mode: put
          
-- name: Deploy Java App
+- name: Create Tomcat Environment
   gather_facts: False
   hosts: localhost
   remote_user: ubuntu
