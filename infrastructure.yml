@@ -67,6 +67,8 @@
 - name: Install Maven
   hosts: lesson13-maven
   remote_user: ubuntu
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   become: True
   gather_facts: True
 
@@ -177,6 +179,8 @@
 - name: Install Tomcat
   hosts: lesson13-tomcat
   remote_user: ubuntu
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   become: True
   gather_facts: True
 
