@@ -4,8 +4,8 @@
   hosts: localhost
   remote_user: ubuntu
   vars:
-    keypair: lesson13_key
-    ansible_key: /tmp/lesson13_keypair.pem
+    keypair: lesson13_key_maven
+    ansible_key: /tmp/lesson13_keypair_maven.pem
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
     security_group: lesson13-maven-securitygroup
@@ -20,7 +20,7 @@
     register: ec2_key_result
 
   - name: Save private key
-    copy: content="{{ ec2_key_result.key.private_key }}" dest="/tmp/lesson13_keypair.pem" mode=0600
+    copy: content="{{ ec2_key_result.key.private_key }}" dest="/tmp/lesson13_keypair_maven.pem" mode=0600
     when: ec2_key_result.changed
 
   - name: Ensure that this security group is present
@@ -71,8 +71,8 @@
   hosts: localhost
   remote_user: ubuntu
   vars:
-    keypair: lesson13_key
-    ansible_key: /tmp/lesson13_keypair.pem
+    keypair: lesson13_key_tomcat
+    ansible_key: /tmp/lesson13_keypair_tomcat.pem
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
     security_group: lesson13-tomcat-securitygroup
@@ -87,7 +87,7 @@
     register: ec2_key_result
 
   - name: Save private key
-    copy: content="{{ ec2_key_result.key.private_key }}" dest="/tmp/lesson13_keypair.pem" mode=0600
+    copy: content="{{ ec2_key_result.key.private_key }}" dest="/tmp/lesson13_keypair_tomcat.pem" mode=0600
     when: ec2_key_result.changed
 
   - name: Ensure that this security group is present
