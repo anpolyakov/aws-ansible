@@ -247,7 +247,7 @@
       mode: create
       permission: public-read
 
-  - name: Download artefact to romcat webroot
+  - name: Download artefact to tomcat webroot
     aws_s3:
       aws_access_key: "{{ aws_access_key }}"
       aws_secret_key: "{{ aws_secret_key }}"
