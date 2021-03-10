@@ -85,12 +85,16 @@
       name: maven
       state: present
 
+  - name: Ensure pip is present
+    apt:
+      name: python3-pip
+      state: present
+
   - name: Install boto3 and botocore with pip3 module
     pip:
       name: 
       - boto3
       - botocore
-      executable: pip-3.7
 
   - name: Get java application
     git:
@@ -204,12 +208,16 @@
       name: tomcat9
       state: started
 
+  - name: Ensure pip is present
+    apt:
+      name: python3-pip
+      state: present
+
   - name: Install boto3 and botocore with pip3 module
     pip:
       name: 
       - boto3
       - botocore
-      executable: pip-3.7
 
   - name: Create an empty bucket
     aws_s3:
