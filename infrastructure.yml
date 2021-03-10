@@ -82,7 +82,32 @@
     apt:
       name: maven
       state: present
-   
+
+  - name: Get java application
+    git:
+      repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello
+      clone: yes
+      dest: /tmp/boxfuse-sample-java-war-hello
+
+  - name: Build java application
+    shell: mvn package
+    args:
+      chdir: /tmp/boxfuse-sample-java-war-hello
+
+  - name: Create an empty bucket
+    aws_s3:
+      bucket: lesson13-bucket
+      region: eu-central-1
+      mode: create
+      permission: public-read
+
+  - name: Copy artefact to bucket
+    aws_s3:
+      bucket: lesson13-bucket
+      object: hello-1.0.war
+      src: /tmp/boxfuse-sample-java-war-hello/hello-1.0.war
+      mode: put
+         
 - name: Deploy Java App
   gather_facts: False
   hosts: localhost
@@ -167,6 +192,22 @@
     service:
       name: tomcat9
       state: started
+
+  - name: Create an empty bucket
+    aws_s3:
+      bucket: lesson13-bucket
+      region: eu-central-1
+      mode: create
+      permission: public-read
+
+  - name: Download artefact to romcat webroot
+    aws_s3:
+      bucket: lesson13-bucket
+      region: eu-central-1
+      object: hello-1.0.war
+      dest: /var/lib/tomcat9/webapps/hello-1.0.war
+      mode: get
+
 
 
   
