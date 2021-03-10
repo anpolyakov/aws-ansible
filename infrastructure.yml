@@ -8,7 +8,7 @@
     ansible_key: /tmp/lesson13_keypair.pem
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
-    security_group: lesson13_maven_securitygroup
+    security_group: lesson13-maven-securitygroup
     region: eu-central-1
   
   tasks:
@@ -64,6 +64,8 @@
       timeout: 30
     loop: "{{ ec2.instances }}"
 
+
+---    
 - name: Deploy Java App
   gather_facts: False
   hosts: localhost
@@ -73,7 +75,7 @@
     ansible_key: /tmp/lesson13_keypair.pem
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
-    security_group: lesson13_tomcat_securitygroup
+    security_group: lesson13-tomcat-securitygroup
     region: eu-central-1
   
   tasks:
