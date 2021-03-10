@@ -3,6 +3,8 @@
   gather_facts: False
   hosts: localhost
   remote_user: ubuntu
+  vars_files:
+    - aws_variables.yml
   vars:
     keypair: lesson13_key_maven
     ansible_key: /tmp/lesson13_keypair_maven.pem
@@ -69,6 +71,8 @@
 - name: Install Maven
   hosts: lesson13-maven
   remote_user: ubuntu
+  vars_files:
+    - aws_variables.yml
   vars:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -113,6 +117,8 @@
 
   - name: Create an empty bucket
     aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
       bucket: lesson13-bucket
       region: eu-central-1
       mode: create
@@ -120,6 +126,8 @@
 
   - name: Copy artefact to bucket
     aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
       bucket: lesson13-bucket
       object: hello-1.0.war
       src: /tmp/boxfuse-sample-java-war-hello/hello-1.0.war
@@ -129,6 +137,8 @@
   gather_facts: False
   hosts: localhost
   remote_user: ubuntu
+  vars_files:
+    - aws_variables.yml
   vars:
     keypair: lesson13_key_tomcat
     ansible_key: /tmp/lesson13_keypair_tomcat.pem
@@ -196,6 +206,8 @@
 - name: Install Tomcat
   hosts: lesson13-tomcat
   remote_user: ubuntu
+  vars_files:
+    - aws_variables.yml
   vars:
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -228,6 +240,8 @@
 
   - name: Create an empty bucket
     aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
       bucket: lesson13-bucket
       region: eu-central-1
       mode: create
@@ -235,6 +249,8 @@
 
   - name: Download artefact to romcat webroot
     aws_s3:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
       bucket: lesson13-bucket
       region: eu-central-1
       object: hello-1.0.war
