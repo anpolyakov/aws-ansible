@@ -54,6 +54,8 @@
     add_host:
       hostname: "{{ item.public_ip }}"
       groupname: lesson13-maven
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
       ansible_ssh_private_key_file: "{{ ansible_key }}"
     loop: "{{ ec2.instances }}"
 
@@ -180,6 +182,8 @@
       hostname: "{{ item.public_ip }}"
       groupname: lesson13-tomcat
       ansible_ssh_private_key_file: "{{ ansible_key }}"
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
     loop: "{{ ec2.instances }}"
 
   - name: Wait for SSH to come up
