@@ -35,7 +35,7 @@
           cidr_ip: 0.0.0.0/0
           rule_desc: allow ssh access
 
-  - name: Ensure that two hosts exists
+  - name: Ensure that Maven host is present
     ec2:
       key_name: "{{ keypair }}"
       region: "{{ region }}"
