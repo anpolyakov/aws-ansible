@@ -91,7 +91,7 @@
   - name: Ensure that this security group is present
     ec2_group:
       name: "{{ security_group }}"
-      description: Security Group for Lesson13-Tomcat
+      description: Security Group for Lesson13
       region: "{{ region }}"
       rules:
         - proto: tcp
