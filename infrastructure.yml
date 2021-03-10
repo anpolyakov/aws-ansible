@@ -85,6 +85,13 @@
       name: maven
       state: present
 
+  - name: Install boto3 and botocore with pip3 module
+    pip:
+      name: 
+      - boto3
+      - botocore
+      executable: pip-3.7
+
   - name: Get java application
     git:
       repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello
@@ -196,6 +203,13 @@
     service:
       name: tomcat9
       state: started
+
+  - name: Install boto3 and botocore with pip3 module
+    pip:
+      name: 
+      - boto3
+      - botocore
+      executable: pip-3.7
 
   - name: Create an empty bucket
     aws_s3:
