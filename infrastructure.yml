@@ -63,9 +63,7 @@
       delay: 30
       timeout: 30
     loop: "{{ ec2.instances }}"
-
-
----    
+   
 - name: Deploy Java App
   gather_facts: False
   hosts: localhost
