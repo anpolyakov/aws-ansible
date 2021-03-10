@@ -1,5 +1,5 @@
 ---
-- name: Create two EC2 nodes
+- name: Build Java App
   gather_facts: False
   hosts: localhost
   remote_user: ubuntu
@@ -8,7 +8,7 @@
     ansible_key: /tmp/lesson13_keypair.pem
     instance_type: t2.micro
     image: "ami-0767046d1677be5a0"
-    security_group: lesson13_securitygroup
+    security_group: lesson13_maven_securitygroup
     region: eu-central-1
   
   tasks:
@@ -43,17 +43,17 @@
       group: "{{ security_group }}"
       image: "{{ image }}"
       wait: true
-      exact_count: 2
+      exact_count: 1
       count_tag:
-        Name: Lesson13
+        Name: Lesson13-Maven
       instance_tags:
-        Name: Lesson13
+        Name: Lesson13-Maven
     register: ec2
 
   - name: Add new instance to host group
     add_host:
       hostname: "{{ item.public_ip }}"
-      groupname: lesson13
+      groupname: lesson13-maven
       ansible_ssh_private_key_file: "{{ ansible_key }}"
     loop: "{{ ec2.instances }}"
 
@@ -64,25 +64,77 @@
       timeout: 30
     loop: "{{ ec2.instances }}"
 
-- name: Configure instances
-  hosts: lesson13
-  remote_user: ubuntu
-  become: True
-  gather_facts: True
-
-  tasks:
-
-  - name: Check hostname
-    shell: hostname && curl ifconfig.me
-    
-- name: Terminate instances
+- name: Deploy Java App
+  gather_facts: False
   hosts: localhost
   remote_user: ubuntu
   vars:
+    keypair: lesson13_key
+    ansible_key: /tmp/lesson13_keypair.pem
+    instance_type: t2.micro
+    image: "ami-0767046d1677be5a0"
+    security_group: lesson13_tomcat_securitygroup
     region: eu-central-1
+  
   tasks:
-    - name: Terminate that were previously launched
-      ec2:
-        region: "{{ region }}"
-        state: 'absent'
-        instance_ids: '{{ ec2.instance_ids }}'
+
+  - name: Create a new ec2 key pair
+    ec2_key:
+      region: "{{ region }}"
+      name: "{{ keypair }}"
+    register: ec2_key_result
+
+  - name: Save private key
+    copy: content="{{ ec2_key_result.key.private_key }}" dest="/tmp/lesson13_keypair.pem" mode=0600
+    when: ec2_key_result.changed
+
+  - name: Ensure that this security group is present
+    ec2_group:
+      name: "{{ security_group }}"
+      description: Security Group for Lesson13-Tomcat
+      region: "{{ region }}"
+      rules:
+        - proto: tcp
+          ports:
+          - 22
+          - 8080
+          cidr_ip: 0.0.0.0/0
+          rule_desc: allow ssh and tomcat access
+
+  - name: Ensure that Tomcat host is present
+    ec2:
+      key_name: "{{ keypair }}"
+      region: "{{ region }}"
+      instance_type: "{{ instance_type }}"
+      group: "{{ security_group }}"
+      image: "{{ image }}"
+      wait: true
+      exact_count: 1
+      count_tag:
+        Name: Lesson13-Tomcat
+      instance_tags:
+        Name: Lesson13-Tomcat
+    register: ec2
+  
+  - name: Add new instance to host group
+    add_host:
+      hostname: "{{ item.public_ip }}"
+      groupname: lesson13-tomcat
+      ansible_ssh_private_key_file: "{{ ansible_key }}"
+    loop: "{{ ec2.instances }}"
+
+  - name: Wait for SSH to come up
+    delegate_to: "{{ item.public_ip }}"
+    wait_for_connection:
+      delay: 30
+      timeout: 30
+    loop: "{{ ec2.instances }}"
+
+  
+  
+  
+
+  
+
+  
+
