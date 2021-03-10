@@ -130,7 +130,7 @@
       aws_secret_key: "{{ aws_secret_key }}"
       bucket: lesson13-bucket
       object: hello-1.0.war
-      src: /tmp/boxfuse-sample-java-war-hello/hello-1.0.war
+      src: /tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
       mode: put
          
 - name: Deploy Java App
