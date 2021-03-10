@@ -63,6 +63,25 @@
       delay: 30
       timeout: 30
     loop: "{{ ec2.instances }}"
+
+- name: Install Maven
+  hosts: lesson13-maven
+  remote_user: ubuntu
+  become: True
+  gather_facts: True
+
+  tasks:
+
+  - name: Ensure openJDK is present
+    apt:
+      name: default-jdk
+      update_cache: yes
+      state: present
+
+  - name: Ensure maven is present
+    apt:
+      name: maven
+      state: present
    
 - name: Deploy Java App
   gather_facts: False
@@ -129,6 +148,26 @@
       delay: 30
       timeout: 30
     loop: "{{ ec2.instances }}"
+
+- name: Install Tomcat
+  hosts: lesson13-tomcat
+  remote_user: ubuntu
+  become: True
+  gather_facts: True
+
+  tasks:
+
+  - name: Ensure Tomcat is present
+    apt:
+      name: tomcat9
+      update_cache: yes
+      state: present
+
+  - name: Ensure tomcat service is running
+    service:
+      name: tomcat9
+      state: started
+
 
   
   
