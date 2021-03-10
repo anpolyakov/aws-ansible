@@ -68,7 +68,9 @@
   hosts: lesson13-maven
   remote_user: ubuntu
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    ansible_key: /tmp/lesson13_keypair_maven.pem
   become: True
   gather_facts: True
 
@@ -191,7 +193,8 @@
   hosts: lesson13-tomcat
   remote_user: ubuntu
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
   become: True
   gather_facts: True
 
